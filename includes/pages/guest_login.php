@@ -201,7 +201,7 @@ function guest_register() {
                           form_password('password2', _("Confirm password") . ' ' . entry_required()) 
                       )) 
                   )),
-                  form_checkboxes('angel_types', _("What do you want to do?") . sprintf(" (<a href=\"%s\">%s</a>)", page_link_to('angeltypes') . '&action=about', _("Description of job types")), $angel_types, $selected_angel_types),
+                  form_checkboxes('angel_types', _("What do you want to do?") . sprintf(" (<a href=\"%s\" target=\"_blank\">%s</a>)", page_link_to('angeltypes') . '&action=about', _("Description of job types")), $angel_types, $selected_angel_types),
                   form_info("", _("Restricted angel types need will be confirmed later by an archangel. You can change your selection in the options section.")) 
               )),
               div('col-md-6', array(
