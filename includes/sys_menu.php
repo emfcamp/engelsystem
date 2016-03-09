@@ -98,12 +98,12 @@ function header_toolbar() {
 }
 
 function make_navigation() {
-  global $p, $privileges;
+  global $p, $privileges, $enable_meetings;
 
   $menu = array();
   $pages = array(
       "news" => news_title(),
-      "user_meetings" => meetings_title(),
+      "user_meetings" => $enable_meetings ? meetings_title() : null,
       "user_shifts" => shifts_title(),
       "angeltypes" => angeltypes_title(),
   );
@@ -119,10 +119,13 @@ function make_navigation() {
   }
   $pages = array_merge($pages, $questions_menu);
 
-  foreach ($pages as $page => $title)
-    if (in_array($page, $privileges))
+  foreach ($pages as $page => $title) {
+    if ($title === null) continue;
+    if (in_array($page, $privileges)) {
       $menu[] = toolbar_item_link(page_link_to($page), '', $title, $page == $p);
-  
+    }
+  }
+
   $admin_menu = array();
   $admin_pages = array(
       "admin_arrive" => admin_arrive_title(),
@@ -138,9 +141,12 @@ function make_navigation() {
       "admin_log" => admin_log_title() 
   );
   
-  foreach ($admin_pages as $page => $title)
-    if (in_array($page, $privileges))
+  foreach ($admin_pages as $page => $title) {
+    if ($title === null) continue;
+    if (in_array($page, $privileges)) {
       $admin_menu[] = toolbar_item_link(page_link_to($page), '', $title, $page == $p);
+    }
+  }
   
   if (count($admin_menu) > 0)
     $menu[] = toolbar_dropdown('', _("Admin"), $admin_menu);

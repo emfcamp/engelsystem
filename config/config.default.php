@@ -14,6 +14,7 @@ $default_theme = 1;
 
 // Anzahl der News, die auf einer Seite ausgeben werden koennen...
 $DISPLAY_NEWS = 6;
+$enable_meetings = true;
 
 // Anzahl Stunden bis zum Austragen eigener Schichten
 $LETZTES_AUSTRAGEN = 3;

@@ -114,7 +114,7 @@ function user_news_comments() {
 }
 
 function user_news() {
-  global $DISPLAY_NEWS, $privileges, $user;
+  global $DISPLAY_NEWS, $privileges, $user, $enable_meetings;
 
   $html = '<div class="col-md-12"><h1>' . news_title() . '</h1>' . msg();
 
@@ -156,7 +156,7 @@ function user_news() {
     $html .= form(array(
         form_text('betreff', _("Subject"), ''),
         form_textarea('text', _("Message"), ''),
-        form_checkbox('treffen', _("Meeting"), false, 1),
+        $enable_meetings ? form_checkbox('treffen', _("Meeting"), false, 1) : '',
         form_submit('submit', _("Save"))
     ));
   }
