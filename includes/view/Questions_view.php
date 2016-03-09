@@ -18,14 +18,14 @@ function Questions_view($open_questions, $answered_questions, $ask_action) {
       table(array(
           'Question' => _("Question"),
           'actions' => "" 
-      ), $open_questions),
+      ), $open_questions, true, _("No open questions.")),
       '<h2>' . _("Answered questions") . '</h2>',
       table(array(
           'Question' => _("Question"),
           'answer_user' => _("Answered by"),
           'Answer' => _("Answer"),
           'actions' => "" 
-      ), $answered_questions),
+      ), $answered_questions, true, _("No answered questions.")),
       '<h2>' . _("Ask an archangel") . '</h2>',
       form(array(
           form_textarea('question', _("Your Question:"), ""),

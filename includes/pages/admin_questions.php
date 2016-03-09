@@ -64,7 +64,7 @@ function admin_questions() {
             'question' => _("Question"),
             'answer' => _("Answer"),
             'actions' => ''
-        ), $unanswered_questions_table),
+        ), $unanswered_questions_table, true, _("There are no unanswered questions.")),
         '<h2>' . _("Answered questions") . '</h2>',
         table(array(
             'from' => _("From"),
@@ -72,7 +72,7 @@ function admin_questions() {
             'answered_by' => _("Answered by"),
             'answer' => _("Answer"),
             'actions' => ''
-        ), $answered_questions_table)
+        ), $answered_questions_table, true,_("No questions have been answered yet."))
     ));
   } else {
     switch ($_REQUEST['action']) {

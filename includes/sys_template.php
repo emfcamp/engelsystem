@@ -344,7 +344,11 @@ function page_with_title($title, $elements) {
 /**
  * Rendert eine Datentabelle
  */
-function table($columns, $rows_raw, $data = true) {
+function table($columns, $rows_raw, $data = true, $no_data_msg = null) {
+  if ($no_data_msg == null) {
+    $no_data_msg = _("No data found.");
+  }
+
   // If only one column is given
   if (! is_array($columns)) {
     $columns = array(
@@ -360,7 +364,7 @@ function table($columns, $rows_raw, $data = true) {
     $rows = $rows_raw;
   
   if (count($rows) == 0)
-    return info(_("No data found."), true);
+    return info($no_data_msg, true);
   $html = "";
   $html .= '<table class="table table-striped' . ($data ? ' data' : '') . '">';
   $html .= '<thead><tr>';
