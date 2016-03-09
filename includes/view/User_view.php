@@ -53,6 +53,7 @@ function User_edit_vouchers_view($user) {
 }
 
 function Users_view($users, $order_by, $arrived_count, $active_count, $force_active_count, $freeloads_count, $tshirts_count, $voucher_count) {
+  global $enable_tshirt_size, $enable_dect;
   foreach ($users as &$user) {
     $user['Nick'] = User_Nick_render($user);
     $user['Gekommen'] = glyph_bool($user['Gekommen']);
@@ -85,14 +86,14 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
           'Nick' => Users_table_header_link('Nick', _('Nick'), $order_by),
           'Vorname' => Users_table_header_link('Vorname', _('Prename'), $order_by),
           'Name' => Users_table_header_link('Name', _('Name'), $order_by),
-          'DECT' => Users_table_header_link('DECT', _('DECT'), $order_by),
+          'DECT' => $enable_dect ? Users_table_header_link('DECT', _('DECT'), $order_by) : null,
           'Gekommen' => Users_table_header_link('Gekommen', _('Arrived'), $order_by),
           'got_voucher' => Users_table_header_link('got_voucher', _('Voucher'), $order_by),
           'freeloads' => _('Freeloads'),
           'Aktiv' => Users_table_header_link('Aktiv', _('Active'), $order_by),
           'force_active' => Users_table_header_link('force_active', _('Forced'), $order_by),
-          'Tshirt' => Users_table_header_link('Tshirt', _('T-Shirt'), $order_by),
-          'Size' => Users_table_header_link('Size', _('Size'), $order_by),
+          'Tshirt' => $enable_tshirt_size ? Users_table_header_link('Tshirt', _('T-Shirt'), $order_by) : null,
+          'Size' => $enable_tshirt_size ? Users_table_header_link('Size', _('Size'), $order_by) : null,
           'lastLogIn' => Users_table_header_link('lastLogIn', _('Last login'), $order_by),
           'actions' => '' 
       ), $users) 

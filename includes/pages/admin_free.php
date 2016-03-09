@@ -4,7 +4,7 @@ function admin_free_title() {
 }
 
 function admin_free() {
-  global $privileges;
+  global $privileges, $enable_dect, $enable_jabber;
   
   $search = "";
   if (isset($_REQUEST['search']))
@@ -84,8 +84,8 @@ function admin_free() {
       table(array(
           'name' => _("Nick"),
           'shift_state' => '',
-          'dect' => _("DECT"),
-          'jabber' => _("Jabber"),
+          'dect' => $enable_dect ? _("DECT") : null,
+          'jabber' => $enable_jabber ? _("Jabber") : null,
           'email' => _("E-Mail"),
           'actions' => '' 
       ), $free_users_table) 

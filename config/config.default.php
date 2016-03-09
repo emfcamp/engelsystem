@@ -32,6 +32,12 @@ define('MIN_PASSWORD_LENGTH', 8);
 // Wenn Engel beim Registrieren oder in ihrem Profil eine T-Shirt Größe angeben sollen, auf true setzen:
 $enable_tshirt_size = true;
 
+// Because you don't always want these things
+$enable_dect = true;
+$enable_jabber = true;
+$enable_phone = true;
+$enable_hometown = true;
+
 // Number of shifts to freeload until angel is locked for shift signup.
 $max_freeloadable_shifts = 2;
 

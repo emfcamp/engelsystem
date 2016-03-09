@@ -14,7 +14,7 @@ function logout_title() {
 
 // Engel registrieren
 function guest_register() {
-  global $tshirt_sizes, $enable_tshirt_size, $default_theme;
+  global $tshirt_sizes, $enable_tshirt_size, $enable_dect, $enable_jabber, $enable_phone, $enable_hometown, $default_theme;
   
   $msg = "";
   $nick = "";
@@ -206,17 +206,17 @@ function guest_register() {
               )),
               div('col-md-6', array(
                   div('row', array(
-                      div('col-sm-4', array(
-                          form_text('dect', _("DECT"), $dect) 
-                      )),
+                      $enable_dect ? div('col-sm-4', array(
+                          form_text('dect', _("DECT"), $dect)
+                      )) : '',
                       div('col-sm-4', array(
                           form_text('mobile', _("Mobile"), $mobile) 
                       )),
-                      div('col-sm-4', array(
+                      $enable_phone ? div('col-sm-4', array(
                           form_text('tel', _("Phone"), $tel) 
-                      )) 
+                      )) : ''
                   )),
-                  form_text('jabber', _("Jabber"), $jabber),
+                  $enable_jabber ? form_text('jabber', _("Jabber"), $jabber) : '',
                   div('row', array(
                       div('col-sm-6', array(
                           form_text('prename', _("First name"), $prename) 
@@ -230,9 +230,9 @@ function guest_register() {
                           form_text('age', _("Age"), $age),
                           form_info("", _("Certain shifts have age restrictions, such as the bar.")) 
                       )),
-                      div('col-sm-9', array(
+                      $enable_hometown ? div('col-sm-9', array(
                           form_text('hometown', _("Hometown"), $hometown) 
-                      )) 
+                      )) : ''
                   )),
                   form_info(entry_required() . ' = ' . _("Entry required!")) 
               )) 
