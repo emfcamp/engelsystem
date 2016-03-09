@@ -22,7 +22,7 @@ function admin_free() {
   
   $angel_types_source = sql_select("SELECT `id`, `name` FROM `AngelTypes` ORDER BY `name`");
   $angel_types = array(
-      '' => 'alle Typen' 
+      '' => 'All Types' 
   );
   foreach ($angel_types_source as $angel_type)
     $angel_types[$angel_type['id']] = $angel_type['name'];
