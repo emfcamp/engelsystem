@@ -99,16 +99,26 @@ function header_toolbar() {
 
 function make_navigation() {
   global $p, $privileges;
-  
+
   $menu = array();
   $pages = array(
       "news" => news_title(),
       "user_meetings" => meetings_title(),
       "user_shifts" => shifts_title(),
       "angeltypes" => angeltypes_title(),
-      "user_questions" => questions_title() 
   );
   
+  if(in_array("admin_questions", $privileges)) {
+    $questions_menu = array(
+      "admin_questions" => admin_questions_title(),
+    );
+  } else {
+    $questions_menu = array(
+      "user_questions" => questions_title(),
+    );
+  }
+  $pages = array_merge($pages, $questions_menu);
+
   foreach ($pages as $page => $title)
     if (in_array($page, $privileges))
       $menu[] = toolbar_item_link(page_link_to($page), '', $title, $page == $p);
