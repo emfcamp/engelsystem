@@ -42,7 +42,7 @@ function user_meetings() {
 }
 
 function display_news($news) {
-  global $privileges, $p;
+  global $privileges, $p, $enable_news_comments;
 
   $html = '';
   $html .= '<div class="panel' . ($news['Treffen'] == 1 ? ' panel-info' : ' panel-default') . '">';
@@ -62,7 +62,7 @@ function display_news($news) {
     engelsystem_error(_("Unable to load user."));
 
   $html .= User_Nick_render($user_source);
-  if ($p != "news_comments")
+  if ($enable_news_comments && $p != "news_comments")
     $html .= '&emsp;<a href="' . page_link_to("news_comments") . '&nid=' . $news['ID'] . '"><span class="glyphicon glyphicon-comment"></span> ' . _("Comments") . ' &raquo;</a> <span class="badge">' . sql_num_query("SELECT * FROM `NewsComments` WHERE `Refid`='" . sql_escape($news['ID']) . "'") . '</span>';
   $html .= '</div>';
   $html .= '</div>';
@@ -70,7 +70,8 @@ function display_news($news) {
 }
 
 function user_news_comments() {
-  global $user;
+  global $user, $enable_news_comments;
+  if (!$enable_news_comments) return _("Comments are disabled.");
 
   $html = '<div class="col-md-12"><h1>' . user_news_comments_title() . '</h1>';
   if (isset($_REQUEST["nid"]) && preg_match("/^[0-9]{1,}$/", $_REQUEST['nid']) && sql_num_query("SELECT * FROM `News` WHERE `ID`='" . sql_escape($_REQUEST['nid']) . "' LIMIT 1") > 0) {
