@@ -4,7 +4,7 @@
 $maintenance_mode = false;
 
 // URL to the angel faq and job description
-$faq_url = "https://events.ccc.de/congress/2013/wiki/Static:Volunteers";
+$faq_url = "?p=angeltypes&action=about";
 
 // contact email address, linked on every page
 $contact_email = "mailto:erzengel@lists.ccc.de";
