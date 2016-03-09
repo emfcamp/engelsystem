@@ -281,7 +281,7 @@ function admin_shifts() {
     }
     
     engelsystem_log("Shift needs following angel types: " . join(", ", $needed_angel_types_info));
-    success("Schichten angelegt.");
+    success(_("Shift created."));
     redirect(page_link_to('admin_shifts'));
   } else {
     unset($_SESSION['admin_shifts_shifts']);
