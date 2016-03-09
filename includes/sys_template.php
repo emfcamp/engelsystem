@@ -368,17 +368,22 @@ function table($columns, $rows_raw, $data = true, $no_data_msg = null) {
   $html = "";
   $html .= '<table class="table table-striped' . ($data ? ' data' : '') . '">';
   $html .= '<thead><tr>';
-  foreach ($columns as $key => $column)
+  foreach ($columns as $key => $column) {
+    if ($column === null) continue;
     $html .= '<th class="column_' . $key . '">' . $column . '</th>';
+  }
   $html .= '</tr></thead>';
   $html .= '<tbody>';
   foreach ($rows as $row) {
     $html .= '<tr>';
-    foreach ($columns as $key => $column)
-      if (isset($row[$key]))
+    foreach ($columns as $key => $column) {
+      if ($column === null) continue;
+      if (isset($row[$key])) {
         $html .= '<td class="column_' . $key . '">' . $row[$key] . '</td>';
-      else
+      } else {
         $html .= '<td class="column_' . $key . '">&nbsp;</td>';
+      }
+    }
     $html .= '</tr>';
   }
   $html .= '</tbody>';
