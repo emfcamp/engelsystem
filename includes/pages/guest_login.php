@@ -227,7 +227,8 @@ function guest_register() {
                   )),
                   div('row', array(
                       div('col-sm-3', array(
-                          form_text('age', _("Age"), $age) 
+                          form_text('age', _("Age"), $age),
+                          form_info("", _("Certain shifts have age restrictions, such as the bar.")) 
                       )),
                       div('col-sm-9', array(
                           form_text('hometown', _("Hometown"), $hometown) 
