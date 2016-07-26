@@ -4,7 +4,6 @@ require_once realpath(__DIR__ . '/../includes/engelsystem_provider.php');
 $free_pages = array(
     'stats',
     'shifts_json_export_all',
-    'user_password_recovery',
     'api',
     'credits',
     'angeltypes',
@@ -14,7 +13,7 @@ $free_pages = array(
     'shifts_json_export',
     'shifts',
     'atom',
-    'login',
+    'logout',
     'sso_fail'
 );
 
@@ -22,26 +21,23 @@ $free_pages = array(
 $p = "";
 
 if (isset($user)) {
-  // Logged-in users get the news
+  // Send logged-in users to the news if they have nowhere else
   if (!isset($_REQUEST['p'])) $_REQUEST['p'] = "news";
-} else if (isset($_REQUEST['p'])) {
-  if ($_REQUEST['p'] == 'sso') {
-    if (isset($_REQUEST['c']) && is_string($_REQUEST['c'])) {
-      $uid = verify_sso_code($sso_secret_key, time(), $_REQUEST['c']);
-      if (!is_null($uid)) {
-        $_SESSION['EMF_UID'] = $uid;
-        redirect('?p=register');
-      }
+
+} else if (isset($_REQUEST['p']) && $_REQUEST['p'] == 'sso') {
+  if (isset($_REQUEST['c']) && preg_match('/[0-9a-zA-Z_-]{20,40}/', $_REQUEST['c'])) {
+    $uid = verify_sso_code($sso_secret_key, time(), $_REQUEST['c']);
+    if (!is_null($uid)) {
+      $_SESSION['EMF_UID'] = $uid;
+      redirect('?p=register');
     }
-    // Avoid a redirect loop
-    $_REQUEST['p'] = 'sso_fail';
-  } else if ($_REQUEST['p'] == 'register') {
-    // allow through
-  } else if ($_REQUEST['p'] == 'login') {
-    // allow through for now
-  } else {
-    redirect($sso_url);
   }
+  // Avoid a redirect loop
+  $_REQUEST['p'] = 'sso_fail';
+}
+
+if (isset($_REQUEST['p']) && $_REQUEST['p'] == 'login') {
+    redirect($sso_url);
 }
 
 if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (in_array($_REQUEST['p'], $free_pages) || in_array($_REQUEST['p'], $privileges))) {
@@ -53,7 +49,7 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
   if ($p == "api") {
     require_once realpath(__DIR__ . '/../includes/controller/api.php');
     error("Api disabled temporily.");
-    redirect(page_link_to('login'));
+    redirect(page_link_to('credits'));
     api_controller();
   } elseif ($p == "ical") {
     require_once realpath(__DIR__ . '/../includes/pages/user_ical.php');
@@ -70,10 +66,12 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
   } elseif ($p == "stats") {
     require_once realpath(__DIR__ . '/../includes/pages/guest_stats.php');
     guest_stats();
+/*
   } elseif ($p == "user_password_recovery") {
     require_once realpath(__DIR__ . '/../includes/controller/users_controller.php');
     $title = user_password_recovery_title();
     $content = user_password_recovery_controller();
+*/
   } elseif ($p == "angeltypes") {
     list($title, $content) = angeltypes_controller();
   } elseif ($p == "shifts") {
@@ -111,9 +109,11 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
   } elseif ($p == "user_settings") {
     $title = settings_title();
     $content = user_settings();
+/*
   } elseif ($p == "login") {
     $title = login_title();
     $content = guest_login();
+*/
   } elseif ($p == "register") {
     $title = register_title();
     $content = guest_register();
@@ -172,7 +172,7 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
   // Wenn schon eingeloggt, keine-Berechtigung-Seite anzeigen
   if (isset($user)) {
     $title = _("No Access");
-    $content = _("You don't have permission to view this page. You probably have to sign in or register in order to gain access!");
+    $content = _("You don't have permission to view this page. Please contact a volunteer manager if you need access.");
   } else {
     // Sonst zur Loginseite leiten
     redirect(page_link_to("login"));

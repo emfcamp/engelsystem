@@ -2392,8 +2392,8 @@ msgstr "Kein Zugriff"
 
 #: /Users/msquare/workspace/projects/engelsystem/public/index.php:148
 msgid ""
-"You don't have permission to view this page. You probably have to sign in or "
-"register in order to gain access!"
+"You don't have permission to view this page. Please contact a "
+"volunteer manager if you need access."
 msgstr ""
 "Du hast keinen Zugriff auf diese Seite. Registriere Dich und logge Dich "
 "bitte ein, um Zugriff zu erhalten!"
