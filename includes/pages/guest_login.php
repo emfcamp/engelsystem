@@ -15,7 +15,7 @@ function logout_title() {
 // Engel registrieren
 function guest_register() {
   global $tshirt_sizes, $enable_tshirt_size, $enable_dect, $enable_jabber, $enable_phone, $enable_hometown, $default_theme;
-  
+
   $msg = "";
   $nick = "";
   $lastname = "";
@@ -33,7 +33,20 @@ function guest_register() {
   $password_hash = "";
   $selected_angel_types = array();
   $planned_arrival_date = null;
-  
+
+  if (!isset($_SESSION['EMF_UID'])) {
+    redirect('?');
+  }
+
+  list($emf_user) = sql_select("SELECT * FROM `EMFUser` WHERE user_id = '" . sql_escape($_SESSION['EMF_UID']) . "'");
+  if (!is_null($emf_user['UID'])) {
+      $_SESSION['uid'] = $emf_user['UID'];
+      redirect(page_link_to('news'));
+  }
+  $mail = $emf_user['email'];
+  $lastname = $emf_user['name'];
+  $mobile = $emf_user['phone'];
+
   $angel_types_source = sql_select("SELECT * FROM `AngelTypes` ORDER BY `name`");
   $angel_types = array();
   foreach ($angel_types_source as $angel_type) {
@@ -55,7 +68,8 @@ function guest_register() {
       $ok = false;
       $msg .= error(sprintf(_("Your nick &quot;%s&quot; is too short (min. 2 characters)."), User_validate_Nick($_REQUEST['nick'])), true);
     }
-    
+
+/*
     if (isset($_REQUEST['mail']) && strlen(strip_request_item('mail')) > 0) {
       $mail = strip_request_item('mail');
       if (! check_email($mail)) {
@@ -66,7 +80,8 @@ function guest_register() {
       $ok = false;
       $msg .= error(_("Please enter your e-mail."), true);
     }
-    
+*/
+
     if (isset($_REQUEST['email_shiftinfo']))
       $email_shiftinfo = true;
     
@@ -87,6 +102,7 @@ function guest_register() {
       }
     }
     
+/*
     if (isset($_REQUEST['password']) && strlen($_REQUEST['password']) >= MIN_PASSWORD_LENGTH) {
       if ($_REQUEST['password'] != $_REQUEST['password2']) {
         $ok = false;
@@ -96,6 +112,7 @@ function guest_register() {
       $ok = false;
       $msg .= error(sprintf(_("Your password is too short (please use at least %s characters)."), MIN_PASSWORD_LENGTH), true);
     }
+*/
     
     if (isset($_REQUEST['planned_arrival_date']) && DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))) {
       $planned_arrival_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))->getTimestamp();
@@ -110,14 +127,18 @@ function guest_register() {
         $selected_angel_types[] = $angel_type_id;
       
       // Trivia
+/*
     if (isset($_REQUEST['lastname']))
       $lastname = strip_request_item('lastname');
     if (isset($_REQUEST['prename']))
       $prename = strip_request_item('prename');
+*/
     if (isset($_REQUEST['age']) && preg_match("/^[0-9]{0,4}$/", $_REQUEST['age']))
       $age = strip_request_item('age');
+/*
     if (isset($_REQUEST['tel']))
       $tel = strip_request_item('tel');
+*/
     if (isset($_REQUEST['dect']))
       $dect = strip_request_item('dect');
     if (isset($_REQUEST['mobile']))
@@ -152,8 +173,11 @@ function guest_register() {
       
       // Assign user-group and set password
       $user_id = sql_id();
+      sql_query("UPDATE `EMFUser` SET `UID` = '" . sql_escape($user_id) . "'WHERE user_id = '" . sql_escape($_SESSION['EMF_UID']) . "'");
       sql_query("INSERT INTO `UserGroups` SET `uid`='" . sql_escape($user_id) . "', `group_id`=-2");
+      /*
       set_password($user_id, $_REQUEST['password']);
+      */
       
       // Assign angel-types
       $user_angel_types_info = array();
@@ -164,8 +188,10 @@ function guest_register() {
       
       engelsystem_log("User " . User_Nick_render(User($user_id)) . " signed up as: " . join(", ", $user_angel_types_info));
       success(_("Registration successful!"));
-      
-      redirect('?');
+
+      // Avoid a double redirect
+      $_SESSION['uid'] = $user_id;
+      redirect(page_link_to('news'));
     }
   }
   
@@ -175,24 +201,32 @@ function guest_register() {
       msg(),
       form(array(
           div('row', array(
-              div('col-md-6', array(
+              div('col-md-8 col-md-offset-1', array(
                   div('row', array(
-                      div('col-sm-4', array(
+                      div('col-sm-6', array(
+                          form_text('lastname', _("Name"), $lastname)
+                      ))
+                  )),
+                  div('row', array(
+                      div('col-sm-12', array(
                           form_text('nick', _("Nick") . ' ' . entry_required(), $nick) 
                       )),
-                      div('col-sm-8', array(
+                  )),
+                  div('row', array(
+                      div('col-sm-12', array(
                           form_email('mail', _("E-Mail") . ' ' . entry_required(), $mail),
                           form_checkbox('email_shiftinfo', _("Please send me an email if my shifts change"), $email_shiftinfo) 
                       )) 
                   )),
                   div('row', array(
-                      div('col-sm-6', array(
+                      div('col-sm-4', array(
                           form_date('planned_arrival_date', _("Planned date of arrival") . ' ' . entry_required(), $planned_arrival_date, time()) 
                       )),
                       div('col-sm-6', array(
                           $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size") . ' ' . entry_required(), $tshirt_sizes, $tshirt_size) : '' 
                       )) 
                   )),
+/*
                   div('row', array(
                       div('col-sm-6', array(
                           form_password('password', _("Password") . ' ' . entry_required()) 
@@ -201,10 +235,11 @@ function guest_register() {
                           form_password('password2', _("Confirm password") . ' ' . entry_required()) 
                       )) 
                   )),
+*/
                   form_checkboxes('angel_types', _("What do you want to do?") . sprintf(" (<a href=\"%s\" target=\"_blank\">%s</a>)", page_link_to('angeltypes') . '&action=about', _("Description of job types")), $angel_types, $selected_angel_types),
                   form_info("", _("Certain roles need will be confirmed later by an volunteer manager. You can change your selection in the options section."))
               )),
-              div('col-md-6', array(
+              div('col-md-8 col-md-offset-1', array(
                   div('row', array(
                       $enable_dect ? div('col-sm-4', array(
                           form_text('dect', _("DECT"), $dect)
@@ -217,6 +252,7 @@ function guest_register() {
                       )) : ''
                   )),
                   $enable_jabber ? form_text('jabber', _("Jabber"), $jabber) : '',
+/*
                   div('row', array(
                       div('col-sm-6', array(
                           form_text('prename', _("First name"), $prename) 
@@ -225,8 +261,9 @@ function guest_register() {
                           form_text('lastname', _("Last name"), $lastname) 
                       )) 
                   )),
+*/
                   div('row', array(
-                      div('col-sm-3', array(
+                      div('col-sm-6', array(
                           form_text('age', _("Age"), $age),
                           form_info("", _("Certain shifts have age restrictions, such as the bar.")) 
                       )),

@@ -68,4 +68,7 @@ $config = array(
     'pw' => "",
     'db' => "engelsystem" 
 );
+
+$sso_secret_key = 'volunteer-test';
+$sso_url = 'https://www.emfcamp.org/sso/volunteer.emfcamp.org';
 ?>

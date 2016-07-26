@@ -14,13 +14,36 @@ $free_pages = array(
     'shifts_json_export',
     'shifts',
     'atom',
-    'login'
+    'login',
+    'sso_fail'
 );
 
 // Gewünschte Seite/Funktion
 $p = "";
-if (! isset($_REQUEST['p']))
-  $_REQUEST['p'] = isset($user) ? "news" : "login";
+
+if (isset($user)) {
+  // Logged-in users get the news
+  if (!isset($_REQUEST['p'])) $_REQUEST['p'] = "news";
+} else if (isset($_REQUEST['p'])) {
+  if ($_REQUEST['p'] == 'sso') {
+    if (isset($_REQUEST['c']) && is_string($_REQUEST['c'])) {
+      $uid = verify_sso_code($sso_secret_key, time(), $_REQUEST['c']);
+      if (!is_null($uid)) {
+        $_SESSION['EMF_UID'] = $uid;
+        redirect('?p=register');
+      }
+    }
+    // Avoid a redirect loop
+    $_REQUEST['p'] = 'sso_fail';
+  } else if ($_REQUEST['p'] == 'register') {
+    // allow through
+  } else if ($_REQUEST['p'] == 'login') {
+    // allow through for now
+  } else {
+    redirect($sso_url);
+  }
+}
+
 if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (in_array($_REQUEST['p'], $free_pages) || in_array($_REQUEST['p'], $privileges))) {
   $p = $_REQUEST['p'];
   
@@ -133,6 +156,10 @@ if (isset($_REQUEST['p']) && preg_match("/^[a-z0-9_]*$/i", $_REQUEST['p']) && (i
   } elseif ($p == "admin_log") {
     $title = admin_log_title();
     $content = admin_log();
+  } elseif ($p == "sso_fail") {
+    require_once realpath(__DIR__ . '/../includes/pages/guest_sso_fail.php');
+    $title = sso_fail_title();
+    $content = guest_sso_fail();
   } elseif ($p == "credits") {
     require_once realpath(__DIR__ . '/../includes/pages/guest_credits.php');
     $title = credits_title();

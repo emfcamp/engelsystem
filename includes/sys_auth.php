@@ -68,4 +68,52 @@ function privileges_for_group($group_id) {
     $privileges[] = $guest_priv['name'];
   return $privileges;
 }
+
+
+function base64url_encode($data) {
+  return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+}
+
+function base64url_decode($data) {
+  return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
+}
+
+function hash_compare($a, $b) {
+  if (!is_string($a) || !is_string($b)) {
+    return false;
+  }
+
+  $len = strlen($a);
+  if ($len !== strlen($b)) {
+    return false;
+  }
+
+  $status = 0;
+  for ($i = 0; $i < $len; $i++) {
+    $status |= ord($a[$i]) ^ ord($b[$i]);
+  }
+  return $status === 0;
+}
+
+function generate_sso_code($key, $timestamp, $uid) {
+  $msg = sprintf("%s-%s", intval($timestamp), $uid);
+  $mac = hash_hmac('sha256', 'sso-' . $msg, $key, TRUE);
+  # Truncate the digest to 20 base64 bytes
+  return $msg . "-" . substr(base64url_encode($mac), 0, 20);
+}
+
+function verify_sso_code($key, $current_timestamp, $code) {
+  list($timestamp, $uid) = explode('-', $code, 3);
+  if (!is_string($uid)) return null;
+  $expected_code = generate_sso_code($key, $timestamp, $uid);
+  if (hash_compare($expected_code, $code)) {
+    $age = $current_timestamp - intval($timestamp);
+    // Allow 10 minutes for connection failure and clock drift
+    if ($age > 600) return false;
+    return intval($uid);
+  }
+  return null;
+}
+
 ?>
+
