@@ -178,8 +178,10 @@ function admin_rooms() {
       msg(),
       table(array(
           'name' => _("Name"),
+/*
           'from_pentabarf' => _("Frab import"),
           'public' => _("Public"),
+*/
           'actions' => "" 
       ), $rooms) 
   ));

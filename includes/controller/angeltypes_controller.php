@@ -231,7 +231,7 @@ function angeltypes_list_controller() {
       $actions[] = button(page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'], _("join"), "btn-xs");
     }
     
-    $angeltype['restricted'] = $angeltype['restricted'] ? glyph('lock') : '';
+    $angeltype['restricted'] = $angeltype['restricted'] ? glyph_bool(true) : '';
     $angeltype['name'] = '<a href="' . page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'] . '">' . $angeltype['name'] . '</a>';
     
     $angeltype['actions'] = table_buttons($actions);

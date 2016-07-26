@@ -89,9 +89,13 @@ function Users_view($users, $order_by, $arrived_count, $active_count, $force_act
           'DECT' => $enable_dect ? Users_table_header_link('DECT', _('DECT'), $order_by) : null,
           'Gekommen' => Users_table_header_link('Gekommen', _('Arrived'), $order_by),
           'got_voucher' => Users_table_header_link('got_voucher', _('Voucher'), $order_by),
+/*
           'freeloads' => _('Freeloads'),
+*/
           'Aktiv' => Users_table_header_link('Aktiv', _('Active'), $order_by),
+/*
           'force_active' => Users_table_header_link('force_active', _('Forced'), $order_by),
+*/
           'Tshirt' => $enable_tshirt_size ? Users_table_header_link('Tshirt', _('T-Shirt'), $order_by) : null,
           'Size' => $enable_tshirt_size ? Users_table_header_link('Size', _('Size'), $order_by) : null,
           'lastLogIn' => Users_table_header_link('lastLogIn', _('Last login'), $order_by),
@@ -201,6 +205,7 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
               $user_source['DECT'],
               '</h1>' 
           )),
+/*
           div('col-md-3', array(
               '<h4>' . _("User state") . '</h4>',
               ($admin_user_privilege && $freeloader) ? '<span class="text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> ' . _("Freeloader") . '</span><br />' : '',
@@ -218,6 +223,7 @@ function User_view($user_source, $admin_user_privilege, $freeloader, $user_angel
               '<h4>' . _("Rights") . '</h4>',
               User_groups_render($user_groups) 
           )) 
+*/
       )),
       div('row space-top', array(
           div('col-md-12', array(
