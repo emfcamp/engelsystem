@@ -41,8 +41,8 @@ function AngelType_render_membership($user_angeltype) {
 }
 
 function AngelType_delete_view($angeltype) {
-  return page_with_title(sprintf(_("Delete angeltype %s"), $angeltype['name']), array(
-      info(sprintf(_("Do you want to delete angeltype %s?"), $angeltype['name']), true),
+  return page_with_title(sprintf(_("Delete role %s"), $angeltype['name']), array(
+      info(sprintf(_("Do you want to delete role %s?"), $angeltype['name']), true),
       buttons(array(
           button(page_link_to('angeltypes'), _("cancel"), 'cancel'),
           button(page_link_to('angeltypes') . '&action=delete&angeltype_id=' . $angeltype['id'] . '&confirmed', _("delete"), 'ok') 
@@ -53,14 +53,14 @@ function AngelType_delete_view($angeltype) {
 function AngelType_edit_view($name, $restricted, $description, $coordinator_mode, $requires_driver_license) {
   return page_with_title(sprintf(_("Edit %s"), $name), array(
       buttons(array(
-          button(page_link_to('angeltypes'), _("Angeltypes"), 'back') 
+          button(page_link_to('angeltypes'), _("Roles"), 'back')
       )),
       msg(),
       form(array(
           $coordinator_mode ? form_info(_("Name"), $name) : form_text('name', _("Name"), $name),
-          $coordinator_mode ? form_info(_("Restricted"), $restricted ? _("Yes") : _("No")) : form_checkbox('restricted', _("Restricted"), $restricted),
+          $coordinator_mode ? form_info(_("Training required"), $restricted ? _("Yes") : _("No")) : form_checkbox('restricted', _("Training required"), $restricted),
           $coordinator_mode ? form_info(_("Requires driver license"), $requires_driver_license ? _("Yes") : _("No")) : form_checkbox('requires_driver_license', _("Requires driver license"), $requires_driver_license),
-          form_info("", _("Restricted angel types can only be used by an angel if enabled by an archangel (double opt-in).")),
+          form_info("", _("Training can only be signed off by the relevant team manager.")),
           form_textarea('description', _("Description"), $description),
           form_info("", _("Please use markdown for the description.")),
           form_submit('submit', _("Save")) 
@@ -70,7 +70,7 @@ function AngelType_edit_view($name, $restricted, $description, $coordinator_mode
 
 function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angeltypes, $admin_angeltypes, $coordinator, $user_driver_license, $user) {
   $buttons = [
-      button(page_link_to('angeltypes'), _("Angeltypes"), 'back') 
+      button(page_link_to('angeltypes'), _("Roles"), 'back')
   ];
   
   if ($angeltype['requires_driver_license'])
@@ -80,10 +80,10 @@ function AngelType_view($angeltype, $members, $user_angeltype, $admin_user_angel
     $buttons[] = button(page_link_to('user_angeltypes') . '&action=add&angeltype_id=' . $angeltype['id'], _("join"), 'add');
   else {
     if ($angeltype['requires_driver_license'] && $user_driver_license == null)
-      error(_("This angeltype requires a driver license. Please enter your driver license information!"));
+      error(_("This role requires a driver license. Please enter your driver license information!"));
     
     if ($angeltype['restricted'] && $user_angeltype['confirm_user_id'] == null)
-      error(sprintf(_("You are unconfirmed for this angeltype. Please go to the introduction for %s to get confirmed."), $angeltype['name']));
+      error(sprintf(_("You are unconfirmed for this role. Please go to the introduction for %s to get confirmed."), $angeltype['name']));
     $buttons[] = button(page_link_to('user_angeltypes') . '&action=delete&user_angeltype_id=' . $user_angeltype['id'], _("leave"), 'cancel');
   }
   
@@ -209,12 +209,12 @@ function AngelTypes_list_view($angeltypes, $admin_angeltypes) {
   return page_with_title(angeltypes_title(), array(
       msg(),
       buttons(array(
-          $admin_angeltypes ? button(page_link_to('angeltypes') . '&action=edit', _("New angeltype"), 'add') : '',
+          $admin_angeltypes ? button(page_link_to('angeltypes') . '&action=edit', _("New role"), 'add') : '',
           button(page_link_to('angeltypes') . '&action=about', _("Teams/Job description")) 
       )),
       table(array(
           'name' => _("Name"),
-          'restricted' => glyph('lock') . _("Restricted"),
+          'restricted' => glyph('lock') . _("Training required"),
           'membership' => _("Membership"),
           'actions' => "" 
       ), $angeltypes) 
@@ -248,7 +248,7 @@ function AngelTypes_about_view($angeltypes, $user_logged_in) {
     }
     
     if ($angeltype['restricted'])
-      $content[] = info(_("This angeltype is restricted by double-opt-in by a team coordinator. Please show up at the according introduction meetings."), true);
+      $content[] = info(_("This role requires training. Please turn up to a training session."), true);
     if ($angeltype['description'] != "")
       $content[] = '<div class="well">' . $parsedown->parse($angeltype['description']) . '</div>';
     $content[] = '<hr />';

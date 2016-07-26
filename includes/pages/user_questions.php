@@ -1,6 +1,6 @@
 <?php
 function questions_title() {
-  return _("Ask an archangel");
+  return _("Ask a question");
 }
 
 function user_questions() {

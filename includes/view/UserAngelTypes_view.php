@@ -44,7 +44,7 @@ function UserAngelType_confirm_view($user_angeltype, $user, $angeltype) {
 }
 
 function UserAngelType_delete_view($user_angeltype, $user, $angeltype) {
-  return page_with_title(_("Remove angeltype"), array(
+  return page_with_title(_("Remove role"), array(
       msg(),
       info(sprintf(_("Do you really want to delete %s from %s?"), User_Nick_render($user), $angeltype['name']), true),
       buttons(array(
@@ -59,13 +59,13 @@ function UserAngelType_add_view($angeltype, $users_source, $user_id) {
   foreach ($users_source as $user_source)
     $users[$user_source['UID']] = User_Nick_render($user_source);
   
-  return page_with_title(_("Add user to angeltype"), array(
+  return page_with_title(_("Add user to role"), array(
       msg(),
       buttons(array(
           button(page_link_to('angeltypes') . '&action=view&angeltype_id=' . $angeltype['id'], _("back"), 'back') 
       )),
       form(array(
-          form_info(_("Angeltype"), $angeltype['name']),
+          form_info(_("Role"), $angeltype['name']),
           form_select('user_id', _("User"), $users, $user_id),
           form_submit('submit', _("Add")) 
       )) 

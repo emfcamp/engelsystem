@@ -163,12 +163,12 @@ function admin_active() {
   
   return page_with_title(admin_active_title(), array(
       form(array(
-          form_text('search', _("Search angel:"), $search),
+          form_text('search', _("Search volunteer:"), $search),
           form_checkbox('show_all_shifts', _("Show all shifts"), $show_all_shifts),
           form_submit('submit', _("Search")) 
       ), page_link_to('admin_active')),
       $set_active == "" ? form(array(
-          form_text('count', _("How much angels should be active?"), $count),
+          form_text('count', _("How many volunteers should be active?"), $count),
           form_submit('set_active', _("Preview")) 
       )) : $set_active,
       msg(),

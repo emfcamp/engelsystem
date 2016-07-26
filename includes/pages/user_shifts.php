@@ -114,7 +114,7 @@ function user_shifts() {
         $shifttype_id = $_REQUEST['shifttype_id'];
       else {
         $ok = false;
-        $msg .= error(_('Please select a shifttype.'), true);
+        $msg .= error(_('Please select a shift type.'), true);
       }
 
       if (isset($_REQUEST['start']) && $tmp = DateTime::createFromFormat("Y-m-d H:i", trim($_REQUEST['start'])))
@@ -141,7 +141,7 @@ function user_shifts() {
           $needed_angel_types[$type['id']] = trim($_REQUEST['type_' . $type['id']]);
         } else {
           $ok = false;
-          $msg .= error(sprintf(_("Please check your input for needed angels of type %s."), $type['name']), true);
+          $msg .= error(sprintf(_("Please check your input for needed volunteers of type %s."), $type['name']), true);
         }
       }
 
@@ -181,12 +181,12 @@ function user_shifts() {
         msg(),
         '<noscript>' . info(_("This page is much more comfortable with javascript."), true) . '</noscript>',
         form(array(
-            form_select('shifttype_id', _('Shifttype'), $shifttypes, $shifttype_id),
+            form_select('shifttype_id', _('Shift type'), $shifttypes, $shifttype_id),
             form_text('title', _("Title"), $title),
             form_select('rid', _("Room:"), $room_array, $rid),
             form_text('start', _("Start:"), date("Y-m-d H:i", $start)),
             form_text('end', _("End:"), date("Y-m-d H:i", $end)),
-            '<h2>' . _("Needed angels") . '</h2>',
+            '<h2>' . _("Needed volunteers") . '</h2>',
             $angel_types,
             form_submit('submit', _("Save"))
         ))
@@ -269,7 +269,7 @@ function user_shifts() {
         $user_id = $user['UID'];
 
       if (sql_num_query("SELECT * FROM `ShiftEntry` WHERE `SID`='" . sql_escape($shift['SID']) . "' AND `UID` = '" . sql_escape($user_id) . "'"))
-        return error("This angel does already have an entry for this shift.", true);
+        return error("This volunteer is already signed up for this shift.", true);
 
       $freeloaded = $shift['freeloaded'];
       $freeload_comment = $shift['freeload_comment'];
@@ -363,7 +363,7 @@ function view_user_shifts() {
   );
 
   if (count($types) == 0) {
-    error(_("The administration has not configured any angeltypes yet - or you are not subscribed to any angeltype."));
+    error(_("The administration has not configured any roles yet - or you are not signed up to a role."));
     redirect('?');
   }
 
@@ -415,9 +415,12 @@ function view_user_shifts() {
       $time = date('Y-m-d', time() + ($key == 'end' ? 24 * 60 * 60 : 0));
       $_SESSION['user_shifts'][$key . '_day'] = in_array($time, $days) ? $time : ($key == 'end' ? max($days) : min($days));
     }
-    if (! isset($_SESSION['user_shifts'][$key . '_time']))
-      $_SESSION['user_shifts'][$key . '_time'] = date('H:i');
   }
+  if (! isset($_SESSION['user_shifts']['start_time']))
+    $_SESSION['user_shifts']['start_time'] = '00:00';
+  if (! isset($_SESSION['user_shifts']['end_time']))
+    $_SESSION['user_shifts']['end_time'] = '23:59';
+
   if ($_SESSION['user_shifts']['start_day'] > $_SESSION['user_shifts']['end_day'])
     $_SESSION['user_shifts']['end_day'] = $_SESSION['user_shifts']['start_day'];
   if ($_SESSION['user_shifts']['start_day'] == $_SESSION['user_shifts']['end_day'] && $_SESSION['user_shifts']['start_time'] >= $_SESSION['user_shifts']['end_time'])
@@ -658,7 +661,7 @@ function view_user_shifts() {
                   $shifts_row .= '<br />';
                 }
                 if (in_array('user_shifts_admin', $privileges))
-                  $shifts_row .= ' ' . button(page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'], _("Add more angels"), 'btn-xs');
+                  $shifts_row .= ' ' . button(page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'], _("Add more volunteers"), 'btn-xs');
               }
               if ($shift['own'] && ! in_array('user_shifts_admin', $privileges))
                 $class = 'own';
@@ -792,7 +795,7 @@ function view_user_shifts() {
           $shift_row['entries'] .= '<br />';
         }
         if (in_array('user_shifts_admin', $privileges)) {
-          $shift_row['entries'] .= '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">' . _('Add more angels') . ' &raquo;</a>';
+          $shift_row['entries'] .= '<a href="' . page_link_to('user_shifts') . '&amp;shift_id=' . $shift['SID'] . '&amp;type_id=' . $angeltype['id'] . '">' . _('Add more volunteers') . ' &raquo;</a>';
         }
         $shifts_table[] = $shift_row;
         $shift['angeltypes'] = $angeltypes;

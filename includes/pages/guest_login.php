@@ -60,7 +60,7 @@ function guest_register() {
       $mail = strip_request_item('mail');
       if (! check_email($mail)) {
         $ok = false;
-        $msg .= error(_("E-mail address is not correct."), true);
+        $msg .= error(_("E-mail address is not valid."), true);
       }
     } else {
       $ok = false;
@@ -163,14 +163,14 @@ function guest_register() {
       }
       
       engelsystem_log("User " . User_Nick_render(User($user_id)) . " signed up as: " . join(", ", $user_angel_types_info));
-      success(_("Angel registration successful!"));
+      success(_("Registration successful!"));
       
       redirect('?');
     }
   }
   
   return page_with_title(register_title(), array(
-      _("By completing this form you're registering as a Chaos-Angel. This script will create you an account in the angel task sheduler."),
+      _("By completing this form you're registering as a volunteer."),
       $msg,
       msg(),
       form(array(
@@ -202,7 +202,7 @@ function guest_register() {
                       )) 
                   )),
                   form_checkboxes('angel_types', _("What do you want to do?") . sprintf(" (<a href=\"%s\" target=\"_blank\">%s</a>)", page_link_to('angeltypes') . '&action=about', _("Description of job types")), $angel_types, $selected_angel_types),
-                  form_info("", _("Restricted angel types need will be confirmed later by an archangel. You can change your selection in the options section.")) 
+                  form_info("", _("Certain roles need will be confirmed later by an volunteer manager. You can change your selection in the options section."))
               )),
               div('col-md-6', array(
                   div('row', array(

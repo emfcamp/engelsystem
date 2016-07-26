@@ -69,7 +69,7 @@ function user_messages() {
     
     return page_with_title(messages_title(), array(
         msg(),
-        sprintf(_("Hello %s, here can you leave messages for other angels"), User_Nick_render($user)),
+        sprintf(_("Hello %s, here can you leave messages for other volunteers"), User_Nick_render($user)),
         form(array(
             table(array(
                 'new' => _("New"),

@@ -8,8 +8,8 @@ function ShiftType_name_render($shifttype) {
 }
 
 function ShiftType_delete_view($shifttype) {
-  return page_with_title(sprintf(_("Delete shifttype %s"), $shifttype['name']), array(
-      info(sprintf(_("Do you want to delete shifttype %s?"), $shifttype['name']), true),
+  return page_with_title(sprintf(_("Delete shift type %s"), $shifttype['name']), array(
+      info(sprintf(_("Do you want to delete shift type %s?"), $shifttype['name']), true),
       buttons(array(
           button(page_link_to('shifttypes'), _("cancel"), 'cancel'),
           button(page_link_to('shifttypes') . '&action=delete&shifttype_id=' . $shifttype['id'] . '&confirmed', _("delete"), 'ok') 
@@ -24,14 +24,14 @@ function ShiftType_edit_view($name, $angeltype_id, $angeltypes, $description, $s
   foreach ($angeltypes as $angeltype)
     $angeltypes_select[$angeltype['id']] = $angeltype['name'];
   
-  return page_with_title($shifttype_id ? _('Edit shifttype') : _('Create shifttype'), [
+  return page_with_title($shifttype_id ? _('Edit shift type') : _('Create shift type'), [
       msg(),
       buttons([
           button(page_link_to('shifttypes'), shifttypes_title(), 'back') 
       ]),
       form([
           form_text('name', _('Name'), $name),
-          form_select('angeltype_id', _('Angeltype'), $angeltypes_select, $angeltype_id),
+          form_select('angeltype_id', _('Role'), $angeltypes_select, $angeltype_id),
           form_textarea('description', _('Description'), $description),
           form_info('', _('Please use markdown for the description.')),
           form_submit('submit', _('Save')) 
@@ -68,7 +68,7 @@ function ShiftTypes_list_view($shifttypes) {
   return page_with_title(shifttypes_title(), [
       msg(),
       buttons([
-          button(page_link_to('shifttypes') . '&action=edit', _('New shifttype'), 'add') 
+          button(page_link_to('shifttypes') . '&action=edit', _('New shift type'), 'add')
       ]),
       table([
           'name' => _('Name'),

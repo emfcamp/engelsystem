@@ -298,7 +298,7 @@ function admin_shifts() {
   return page_with_title(admin_shifts_title(), array(
       msg(),
       form(array(
-          form_select('shifttype_id', _('Shifttype'), $shifttypes, $shifttype_id),
+          form_select('shifttype_id', _('Shift type'), $shifttypes, $shifttype_id),
           form_text('title', _("Title"), $title),
           form_select('rid', _("Room"), $room_array, $_REQUEST['rid']),
           '<div class="row">',

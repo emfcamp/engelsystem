@@ -8,7 +8,7 @@ function user_driver_license_required_hint() {
   
   $angeltypes = User_angeltypes($user);
   if ($angeltypes === false)
-    engelsystem_error("Unable to load user angeltypes.");
+    engelsystem_error("Unable to load user roles.");
   $user_driver_license = UserDriverLicense($user['UID']);
   if ($user_driver_license === false)
     engelsystem_error("Unable to load user driver license.");
@@ -21,7 +21,7 @@ function user_driver_license_required_hint() {
     }
   
   if ($driving_license_information_required && $user_driver_license == null)
-    return info(sprintf(_("You joined an angeltype which requires a driving license. Please edit your driving license information here: %s."), '<a href="' . user_driver_license_edit_link() . '">' . _("driving license information") . '</a>'), true);
+    return info(sprintf(_("You joined a role which requires a driving license. Please edit your driving license information here: %s."), '<a href="' . user_driver_license_edit_link() . '">' . _("driving license information") . '</a>'), true);
   
   return '';
 }

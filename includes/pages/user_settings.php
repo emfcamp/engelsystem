@@ -34,7 +34,7 @@ function user_settings() {
       $mail = strip_request_item('mail');
       if (! check_email($mail)) {
         $ok = false;
-        $msg .= error(_("E-mail address is not correct."), true);
+        $msg .= error(_("E-mail address is not valid."), true);
       }
     } else {
       $ok = false;
@@ -118,7 +118,7 @@ function user_settings() {
     if (! isset($_REQUEST['password']) || ! verify_password($_REQUEST['password'], $user['Passwort'], $user['UID']))
       $msg .= error(_("-> not OK. Please try again."), true);
     elseif (strlen($_REQUEST['new_password']) < MIN_PASSWORD_LENGTH)
-      $msg .= error(_("Your password is to short (please use at least 6 characters)."), true);
+      $msg .= error(_("Your password is too short (please use at least 6 characters)."), true);
     elseif ($_REQUEST['new_password'] != $_REQUEST['new_password2'])
       $msg .= error(_("Your passwords don't match."), true);
     elseif (set_password($user['UID'], $_REQUEST['new_password']))
@@ -179,7 +179,7 @@ function user_settings() {
                   $enable_jabber ? form_text('jabber', _("Jabber"), $jabber) : '',
                   $enable_hometown ? form_text('hometown', _("Hometown"), $hometown) : '',
                   $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size"), $tshirt_sizes, $tshirt_size) : '',
-                  form_info('', _('Please visit the angeltypes page to manage your angeltypes.')),
+                  form_info('', _('Please visit the roles page to manage your roles.')),
                   form_submit('submit', _("Save")) 
               )) 
           )),

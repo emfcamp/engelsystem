@@ -91,7 +91,7 @@ function admin_import() {
             div('col-md-offset-3 col-md-6', [
                 form(array(
                     form_info('', _("This import will create/update/delete rooms and shifts by given FRAB-export file. The needed file format is xcal.")),
-                    form_select('shifttype_id', _('Shifttype'), $shifttypes, $shifttype_id),
+                    form_select('shifttype_id', _('Shift type'), $shifttypes, $shifttype_id),
                     form_spinner('add_minutes_start', _("Add minutes to start"), $add_minutes_start),
                     form_spinner('add_minutes_end', _("Add minutes to end"), $add_minutes_end),
                     form_file('xcal_file', _("xcal-File (.xcal)")),

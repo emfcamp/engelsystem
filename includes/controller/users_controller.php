@@ -218,7 +218,7 @@ function user_password_recovery_controller() {
         }
       } else {
         $ok = false;
-        error(_("Your password is to short (please use at least 6 characters)."));
+        error(_("Your password is too short (please use at least 6 characters)."));
       }
       
       if ($ok) {
@@ -244,11 +244,11 @@ function user_password_recovery_controller() {
             engelsystem_error("Unable to load user.");
           if ($user_source == null) {
             $ok = false;
-            error(_("E-mail address is not correct."));
+            error(_("E-mail address is not valid."));
           }
         } else {
           $ok = false;
-          error(_("E-mail address is not correct."));
+          error(_("E-mail address is not valid."));
         }
       } else {
         $ok = false;

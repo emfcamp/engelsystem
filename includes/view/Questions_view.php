@@ -26,7 +26,7 @@ function Questions_view($open_questions, $answered_questions, $ask_action) {
           'Answer' => _("Answer"),
           'actions' => "" 
       ), $answered_questions, true, _("No answered questions.")),
-      '<h2>' . _("Ask an archangel") . '</h2>',
+      '<h2>' . _("Ask a question") . '</h2>',
       form(array(
           form_textarea('question', _("Your Question:"), ""),
           form_submit('submit', _("Save")) 

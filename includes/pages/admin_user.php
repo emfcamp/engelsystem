@@ -76,7 +76,7 @@ function admin_user() {
     
     $html .= "<hr />";
     
-    $html .= form_info('', _('Please visit the angeltypes page or the users profile to manage users angeltypes.'));
+    $html .= form_info('', _("Please visit the roles page or the user's profile to manage user roles."));
     
     $html .= "Hier kannst Du das Passwort dieses Engels neu setzen:<form action=\"" . page_link_to("admin_user") . "&action=change_pw&id=$id\" method=\"post\">\n";
     $html .= "<table>\n";

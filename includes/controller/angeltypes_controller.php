@@ -4,7 +4,7 @@
  * Text for Angeltype related links.
  */
 function angeltypes_title() {
-  return _("Angeltypes");
+  return _("Roles");
 }
 
 /**
@@ -78,12 +78,12 @@ function angeltype_delete_controller() {
       engelsystem_error("Unable to delete angeltype.");
     
     engelsystem_log("Deleted angeltype: " . AngelType_name_render($angeltype));
-    success(sprintf(_("Angeltype %s deleted."), AngelType_name_render($angeltype)));
+    success(sprintf(_("Role %s deleted."), AngelType_name_render($angeltype)));
     redirect(page_link_to('angeltypes'));
   }
   
   return array(
-      sprintf(_("Delete angeltype %s"), $angeltype['name']),
+      sprintf(_("Delete role %s"), $angeltype['name']),
       AngelType_delete_view($angeltype) 
   );
 }
