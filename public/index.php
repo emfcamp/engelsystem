@@ -22,7 +22,10 @@ $p = "";
 
 if (isset($user)) {
   // Send logged-in users to the news if they have nowhere else
-  if (!isset($_REQUEST['p'])) $_REQUEST['p'] = "news";
+  if (!isset($_REQUEST['p'])) redirect('?p=news');
+
+  // Ditto people who try to log in twice
+  if ($_REQUEST['p'] == 'sso') redirect('?p=news');
 
 } else if (isset($_REQUEST['p']) && $_REQUEST['p'] == 'sso') {
   if (isset($_REQUEST['c']) && preg_match('/[0-9a-zA-Z_-]{20,40}/', $_REQUEST['c'])) {
