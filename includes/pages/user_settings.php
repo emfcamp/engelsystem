@@ -61,9 +61,6 @@ function user_settings() {
 
     if (isset($_REQUEST['planned_arrival_date']) && DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))) {
       $planned_arrival_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))->getTimestamp();
-    } else {
-      $ok = false;
-      $msg .= error(_("Please enter your planned date of arrival."), true);
     }
     
     if (isset($_REQUEST['planned_departure_date']) && $_REQUEST['planned_departure_date'] != '') {
@@ -75,10 +72,14 @@ function user_settings() {
       }
     } else
       $planned_departure_date = null;
-      
-      // Trivia
-    if (isset($_REQUEST['lastname']))
+
+    if (isset($_REQUEST['lastname']) && trim($_REQUEST['lastname']) != '') {
       $lastname = strip_request_item('lastname');
+    } else {
+      $ok = false;
+      $msg .= error(_("Please enter your name."), true);
+    }
+
 /*
     if (isset($_REQUEST['prename']))
       $prename = strip_request_item('prename');
@@ -180,11 +181,11 @@ function user_settings() {
 /*
                   form_text('nick', _("Nick"), $nick, true),
 */
-                  form_text('lastname', _("Name"), $lastname),
+                  form_text('lastname', _("Name") . ' ' . entry_required(), $lastname),
 /*
                   form_text('prename', _("First name"), $prename),
 */
-                  form_date('planned_arrival_date', _("Planned date of arrival") . ' ' . entry_required(), $planned_arrival_date, time()),
+                  form_date('planned_arrival_date', _("Planned date of arrival"), $planned_arrival_date, time()),
                   form_date('planned_departure_date', _("Planned date of departure"), $planned_departure_date, time()),
                   form_text('age', _("Age"), $age),
                   $enable_phone ? form_text('tel', _("Phone"), $tel) : '',
