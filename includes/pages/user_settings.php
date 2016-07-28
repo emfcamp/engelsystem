@@ -26,7 +26,7 @@ function user_settings() {
   $selected_language = $user['Sprache'];
   $planned_arrival_date = $user['planned_arrival_date'];
   $planned_departure_date = $user['planned_departure_date'];
-  
+
   if (isset($_REQUEST['submit'])) {
     $ok = true;
     
@@ -42,7 +42,8 @@ function user_settings() {
     }
     
     $email_shiftinfo = isset($_REQUEST['email_shiftinfo']);
-    
+
+/*
     if (isset($_REQUEST['jabber']) && strlen(strip_request_item('jabber')) > 0) {
       $jabber = strip_request_item('jabber');
       if (! check_email($jabber)) {
@@ -56,7 +57,8 @@ function user_settings() {
     elseif ($enable_tshirt_size) {
       $ok = false;
     }
-    
+*/
+
     if (isset($_REQUEST['planned_arrival_date']) && DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))) {
       $planned_arrival_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))->getTimestamp();
     } else {
@@ -77,19 +79,27 @@ function user_settings() {
       // Trivia
     if (isset($_REQUEST['lastname']))
       $lastname = strip_request_item('lastname');
+/*
     if (isset($_REQUEST['prename']))
       $prename = strip_request_item('prename');
+*/
     if (isset($_REQUEST['age']) && preg_match("/^[0-9]{0,4}$/", $_REQUEST['age']))
       $age = strip_request_item('age');
+/*
     if (isset($_REQUEST['tel']))
       $tel = strip_request_item('tel');
     if (isset($_REQUEST['dect']))
+*/
       $dect = strip_request_item('dect');
     if (isset($_REQUEST['mobile']))
       $mobile = strip_request_item('mobile');
+/*
     if (isset($_REQUEST['hometown']))
       $hometown = strip_request_item('hometown');
-    
+*/
+
+    $nick = $lastname . ' (' . $mail . ')';
+
     if ($ok) {
       sql_query("
           UPDATE `User` SET
@@ -112,6 +122,7 @@ function user_settings() {
       success(_("Settings saved."));
       redirect(page_link_to('user_settings'));
     }
+/*
   } elseif (isset($_REQUEST['submit_password'])) {
     $ok = true;
     
@@ -126,6 +137,7 @@ function user_settings() {
     else
       error(_("Failed setting password."));
     redirect(page_link_to('user_settings'));
+*/
   } elseif (isset($_REQUEST['submit_theme'])) {
     $ok = true;
     
@@ -165,9 +177,13 @@ function user_settings() {
               form(array(
                   form_info('', _("Here you can change your user details.")),
                   form_info(entry_required() . ' = ' . _("Entry required!")),
+/*
                   form_text('nick', _("Nick"), $nick, true),
-                  form_text('lastname', _("Last name"), $lastname),
+*/
+                  form_text('lastname', _("Name"), $lastname),
+/*
                   form_text('prename', _("First name"), $prename),
+*/
                   form_date('planned_arrival_date', _("Planned date of arrival") . ' ' . entry_required(), $planned_arrival_date, time()),
                   form_date('planned_departure_date', _("Planned date of departure"), $planned_departure_date, time()),
                   form_text('age', _("Age"), $age),
@@ -184,6 +200,7 @@ function user_settings() {
               )) 
           )),
           div('col-md-6', array(
+/*
               form(array(
                   form_info(_("Here you can change your password.")),
                   form_password('password', _("Old password:")),
@@ -191,6 +208,7 @@ function user_settings() {
                   form_password('new_password2', _("Password confirmation:")),
                   form_submit('submit_password', _("Save")) 
               )),
+*/
               form(array(
                   form_info(_("Here you can choose your color settings:")),
                   form_select('theme', _("Color settings:"), $themes, $selected_theme),
