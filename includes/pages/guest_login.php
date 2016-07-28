@@ -58,6 +58,7 @@ function guest_register() {
   if (isset($_REQUEST['submit'])) {
     $ok = true;
     
+/*
     if (isset($_REQUEST['nick']) && strlen(User_validate_Nick($_REQUEST['nick'])) > 1) {
       $nick = User_validate_Nick($_REQUEST['nick']);
       if (sql_num_query("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($nick) . "' LIMIT 1") > 0) {
@@ -68,8 +69,8 @@ function guest_register() {
       $ok = false;
       $msg .= error(sprintf(_("Your nick &quot;%s&quot; is too short (min. 2 characters)."), User_validate_Nick($_REQUEST['nick'])), true);
     }
+*/
 
-/*
     if (isset($_REQUEST['mail']) && strlen(strip_request_item('mail')) > 0) {
       $mail = strip_request_item('mail');
       if (! check_email($mail)) {
@@ -80,7 +81,6 @@ function guest_register() {
       $ok = false;
       $msg .= error(_("Please enter your e-mail."), true);
     }
-*/
 
     if (isset($_REQUEST['email_shiftinfo']))
       $email_shiftinfo = true;
@@ -127,9 +127,9 @@ function guest_register() {
         $selected_angel_types[] = $angel_type_id;
       
       // Trivia
-/*
     if (isset($_REQUEST['lastname']))
       $lastname = strip_request_item('lastname');
+/*
     if (isset($_REQUEST['prename']))
       $prename = strip_request_item('prename');
 */
@@ -147,7 +147,9 @@ function guest_register() {
       $hometown = strip_request_item('hometown');
     if (isset($_REQUEST['comment']))
       $comment = strip_request_item_nl('comment');
-    
+
+    $nick = $lastname . ' (' . $mail . ')';
+
     if ($ok) {
       sql_query("
           INSERT INTO `User` SET 
@@ -207,11 +209,13 @@ function guest_register() {
                           form_text('lastname', _("Name"), $lastname)
                       ))
                   )),
+                  /*
                   div('row', array(
                       div('col-sm-12', array(
                           form_text('nick', _("Nick") . ' ' . entry_required(), $nick) 
                       )),
                   )),
+                  */
                   div('row', array(
                       div('col-sm-12', array(
                           form_email('mail', _("E-Mail") . ' ' . entry_required(), $mail),
@@ -263,7 +267,7 @@ function guest_register() {
                   )),
 */
                   div('row', array(
-                      div('col-sm-6', array(
+                      div('col-sm-4', array(
                           form_text('age', _("Age"), $age),
                           form_info("", _("Certain shifts have age restrictions, such as the bar.")) 
                       )),
@@ -298,7 +302,7 @@ function guest_login() {
   
   if (isset($_REQUEST['submit'])) {
     $ok = true;
-    
+
     if (isset($_REQUEST['nick']) && strlen(User_validate_Nick($_REQUEST['nick'])) > 0) {
       $nick = User_validate_Nick($_REQUEST['nick']);
       $login_user = sql_select("SELECT * FROM `User` WHERE `Nick`='" . sql_escape($nick) . "'");
