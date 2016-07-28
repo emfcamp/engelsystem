@@ -1897,7 +1897,7 @@ msgstr "abbrechen"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:61
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:217
-msgid "Training required"
+msgid "Restricted"
 msgstr "Beschränkt"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:61
@@ -1916,7 +1916,7 @@ msgstr "Benötigt Führerschein"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:63
 msgid ""
-"Training can only be signed off by the relevant team manager."
+"Restricted roles can only be granted by admins."
 msgstr ""
 "Beschränkte Engeltypen müssen von einem Erzengel oder Team-Koordinator "
 "freigeschaltet werden (double-opt-in)."

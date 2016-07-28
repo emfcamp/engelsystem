@@ -58,9 +58,9 @@ function AngelType_edit_view($name, $restricted, $description, $coordinator_mode
       msg(),
       form(array(
           $coordinator_mode ? form_info(_("Name"), $name) : form_text('name', _("Name"), $name),
-          $coordinator_mode ? form_info(_("Training required"), $restricted ? _("Yes") : _("No")) : form_checkbox('restricted', _("Training required"), $restricted),
+          $coordinator_mode ? form_info(_("Restricted"), $restricted ? _("Yes") : _("No")) : form_checkbox('restricted', _("Restricted"), $restricted),
           $coordinator_mode ? form_info(_("Requires driver license"), $requires_driver_license ? _("Yes") : _("No")) : form_checkbox('requires_driver_license', _("Requires driver license"), $requires_driver_license),
-          form_info("", _("Training can only be signed off by the relevant team manager.")),
+          form_info("", _("Restricted roles can only be granted by admins.")),
           form_textarea('description', _("Description"), $description),
           form_info("", _("Please use markdown for the description.")),
           form_submit('submit', _("Save")) 
@@ -214,7 +214,7 @@ function AngelTypes_list_view($angeltypes, $admin_angeltypes) {
       )),
       table(array(
           'name' => _("Name"),
-          'restricted' => glyph('lock') . _("Training required"),
+          'restricted' => glyph('lock') . _("Restricted"),
           'membership' => _("Membership"),
           'actions' => "" 
       ), $angeltypes) 
