@@ -29,17 +29,17 @@ function admin_user() {
     $html .= "<input type=\"hidden\" name=\"Type\" value=\"Normal\">\n";
     $html .= "<tr><td>\n";
     $html .= "<table>\n";
-    $html .= "  <tr><td>Nick</td><td>" . "<input type=\"text\" size=\"40\" name=\"eNick\" value=\"" . $user_source['Nick'] . "\"></td></tr>\n";
+    $html .= "  <tr><td>Nick</td><td>" . "<input class=\"form-control\" type=\"text\" size=\"40\" name=\"eNick\" value=\"" . $user_source['Nick'] . "\"></td></tr>\n";
     $html .= "  <tr><td>lastLogIn</td><td>" . date("Y-m-d H:i", $user_source['lastLogIn']) . "</td></tr>\n";
-    $html .= "  <tr><td>Name</td><td>" . "<input type=\"text\" size=\"40\" name=\"eName\" value=\"" . $user_source['Name'] . "\"></td></tr>\n";
-    $html .= "  <tr><td>Vorname</td><td>" . "<input type=\"text\" size=\"40\" name=\"eVorname\" value=\"" . $user_source['Vorname'] . "\"></td></tr>\n";
-    $html .= "  <tr><td>Alter</td><td>" . "<input type=\"text\" size=\"5\" name=\"eAlter\" value=\"" . $user_source['Alter'] . "\"></td></tr>\n";
-    $html .= "  <tr><td>Telefon</td><td>" . "<input type=\"text\" size=\"40\" name=\"eTelefon\" value=\"" . $user_source['Telefon'] . "\"></td></tr>\n";
-    $html .= "  <tr><td>Handy</td><td>" . "<input type=\"text\" size=\"40\" name=\"eHandy\" value=\"" . $user_source['Handy'] . "\"></td></tr>\n";
-    $html .= "  <tr><td>DECT</td><td>" . "<input type=\"text\" size=\"4\" name=\"eDECT\" value=\"" . $user_source['DECT'] . "\"></td></tr>\n";
-    $html .= "  <tr><td>email</td><td>" . "<input type=\"text\" size=\"40\" name=\"eemail\" value=\"" . $user_source['email'] . "\"></td></tr>\n";
+    $html .= "  <tr><td>Name</td><td>" . "<input class=\"form-control\" type=\"text\" size=\"40\" name=\"eName\" value=\"" . $user_source['Name'] . "\"></td></tr>\n";
+    $html .= "  <tr><td>Vorname</td><td>" . "<input class=\"form-control\" type=\"text\" size=\"40\" name=\"eVorname\" value=\"" . $user_source['Vorname'] . "\"></td></tr>\n";
+    $html .= "  <tr><td>Alter</td><td>" . "<input class=\"form-control\" type=\"text\" size=\"5\" name=\"eAlter\" value=\"" . $user_source['Alter'] . "\"></td></tr>\n";
+    $html .= "  <tr><td>Telefon</td><td>" . "<input class=\"form-control\" type=\"text\" size=\"40\" name=\"eTelefon\" value=\"" . $user_source['Telefon'] . "\"></td></tr>\n";
+    $html .= "  <tr><td>Handy</td><td>" . "<input class=\"form-control\" type=\"text\" size=\"40\" name=\"eHandy\" value=\"" . $user_source['Handy'] . "\"></td></tr>\n";
+    $html .= "  <tr><td>DECT</td><td>" . "<input class=\"form-control\" type=\"text\" size=\"4\" name=\"eDECT\" value=\"" . $user_source['DECT'] . "\"></td></tr>\n";
+    $html .= "  <tr><td>email</td><td>" . "<input class=\"form-control\" type=\"text\" size=\"40\" name=\"eemail\" value=\"" . $user_source['email'] . "\"></td></tr>\n";
     $html .= "<tr><td>" . form_checkbox('email_shiftinfo', _("Please send me an email if my shifts change"), $user_source['email_shiftinfo']) . "</td></tr>\n";
-    $html .= "  <tr><td>jabber</td><td>" . "<input type=\"text\" size=\"40\" name=\"ejabber\" value=\"" . $user_source['jabber'] . "\"></td></tr>\n";
+    $html .= "  <tr><td>jabber</td><td>" . "<input class=\"form-control\" type=\"text\" size=\"40\" name=\"ejabber\" value=\"" . $user_source['jabber'] . "\"></td></tr>\n";
     $html .= "  <tr><td>Size</td><td>" . html_select_key('size', 'eSize', $tshirt_sizes, $user_source['Size']) . "</td></tr>\n";
     
     $options = array(
@@ -65,26 +65,26 @@ function admin_user() {
     $html .= "  <tr><td>T-Shirt</td><td>\n";
     $html .= html_options('eTshirt', $options, $user_source['Tshirt']) . "</td></tr>\n";
     
-    $html .= "  <tr><td>Hometown</td><td>" . "<input type=\"text\" size=\"40\" name=\"Hometown\" value=\"" . $user_source['Hometown'] . "\"></td></tr>\n";
+    $html .= "  <tr><td>Hometown</td><td>" . "<input class=\"form-control\" type=\"text\" size=\"40\" name=\"Hometown\" value=\"" . $user_source['Hometown'] . "\"></td></tr>\n";
     
     $html .= "</table>\n</td><td valign=\"top\"></td></tr>";
     
     $html .= "</td></tr>\n";
     $html .= "</table>\n<br />\n";
-    $html .= "<input type=\"submit\" value=\"Speichern\">\n";
+    $html .= "<input class=\"btn btn-success\" type=\"submit\" value=\"Speichern\">\n";
     $html .= "</form>";
     
     $html .= "<hr />";
     
     $html .= form_info('', _("Please visit the roles page or the user's profile to manage user roles."));
-    
+/*
     $html .= "Hier kannst Du das Passwort dieses Engels neu setzen:<form action=\"" . page_link_to("admin_user") . "&action=change_pw&id=$id\" method=\"post\">\n";
     $html .= "<table>\n";
     $html .= "  <tr><td>Passwort</td><td>" . "<input type=\"password\" size=\"40\" name=\"new_pw\" value=\"\"></td></tr>\n";
     $html .= "  <tr><td>Wiederholung</td><td>" . "<input type=\"password\" size=\"40\" name=\"new_pw2\" value=\"\"></td></tr>\n";
-    
     $html .= "</table>";
     $html .= "<input type=\"submit\" value=\"Speichern\">\n";
+*/
     $html .= "</form>";
     
     $html .= "<hr />";
