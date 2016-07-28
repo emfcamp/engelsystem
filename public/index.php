@@ -31,7 +31,7 @@ if (isset($user)) {
   if (isset($_REQUEST['c']) && preg_match('/[0-9a-zA-Z_-]{20,40}/', $_REQUEST['c'])) {
     $uid = verify_sso_code($sso_secret_key, time(), $_REQUEST['c']);
     if (!is_null($uid)) {
-      $_SESSION['EMF_UID'] = $uid;
+      $_SESSION['EMF_user_id'] = $uid;
       redirect('?p=register');
     }
   }

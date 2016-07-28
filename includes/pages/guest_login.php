@@ -34,11 +34,16 @@ function guest_register() {
   $selected_angel_types = array();
   $planned_arrival_date = null;
 
-  if (!isset($_SESSION['EMF_UID'])) {
+  if (!isset($_SESSION['EMF_user_id'])) {
     redirect('?');
   }
 
-  list($emf_user) = sql_select("SELECT * FROM `EMFUser` WHERE user_id = '" . sql_escape($_SESSION['EMF_UID']) . "'");
+  list($emf_user) = sql_select("
+    SELECT e.*, eu.UID FROM EMFUser e
+    LEFT JOIN EMFUserUser eu
+      ON eu.user_id = e.user_id
+    WHERE e.user_id = '" . sql_escape($_SESSION['EMF_user_id']) . "'");
+
   if (!is_null($emf_user['UID'])) {
       $_SESSION['uid'] = $emf_user['UID'];
       redirect(page_link_to('news'));
@@ -175,7 +180,7 @@ function guest_register() {
       
       // Assign user-group and set password
       $user_id = sql_id();
-      sql_query("UPDATE `EMFUser` SET `UID` = '" . sql_escape($user_id) . "'WHERE user_id = '" . sql_escape($_SESSION['EMF_UID']) . "'");
+      sql_query("INSERT INTO `EMFUserUser` SET `UID` = '" . sql_escape($user_id) . "', `user_id` = '" . sql_escape($_SESSION['EMF_user_id']) . "'");
       sql_query("INSERT INTO `UserGroups` SET `uid`='" . sql_escape($user_id) . "', `group_id`=-2");
       /*
       set_password($user_id, $_REQUEST['password']);
