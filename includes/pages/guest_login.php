@@ -121,9 +121,6 @@ function guest_register() {
     
     if (isset($_REQUEST['planned_arrival_date']) && DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))) {
       $planned_arrival_date = DateTime::createFromFormat("Y-m-d", trim($_REQUEST['planned_arrival_date']))->getTimestamp();
-    } else {
-      $ok = false;
-      $msg .= error(_("Please enter your planned date of arrival."), true);
     }
     
     $selected_angel_types = array();
@@ -131,9 +128,13 @@ function guest_register() {
       if (isset($_REQUEST['angel_types_' . $angel_type_id]))
         $selected_angel_types[] = $angel_type_id;
       
-      // Trivia
-    if (isset($_REQUEST['lastname']))
+    if (isset($_REQUEST['lastname']) && trim($_REQUEST['lastname']) != '') {
       $lastname = strip_request_item('lastname');
+    } else {
+      $ok = false;
+      $msg .= error(_("Please enter your name."), true);
+    }
+
 /*
     if (isset($_REQUEST['prename']))
       $prename = strip_request_item('prename');
@@ -211,7 +212,7 @@ function guest_register() {
               div('col-md-8 col-md-offset-1', array(
                   div('row', array(
                       div('col-sm-6', array(
-                          form_text('lastname', _("Name"), $lastname)
+                          form_text('lastname', _("Name") . ' ' . entry_required(), $lastname)
                       ))
                   )),
                   /*
@@ -229,7 +230,7 @@ function guest_register() {
                   )),
                   div('row', array(
                       div('col-sm-4', array(
-                          form_date('planned_arrival_date', _("Planned date of arrival") . ' ' . entry_required(), $planned_arrival_date, time()) 
+                          form_date('planned_arrival_date', _("Planned date of arrival"), $planned_arrival_date, time())
                       )),
                       div('col-sm-6', array(
                           $enable_tshirt_size ? form_select('tshirt_size', _("Shirt size") . ' ' . entry_required(), $tshirt_sizes, $tshirt_size) : '' 
