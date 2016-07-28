@@ -83,7 +83,7 @@ function header_toolbar() {
   $user_submenu = make_langselect();
   $user_submenu[] = toolbar_item_divider();
   if (in_array('user_myshifts', $privileges))
-    $toolbar_items[] = toolbar_item_link(page_link_to('users') . '&amp;action=view', ' icon-icon_angel', $user['Nick'], $p == 'users');
+    $toolbar_items[] = toolbar_item_link(page_link_to('users') . '&amp;action=view', ' icon-icon_angel', $user['Name'], $p == 'users');
   
   if (in_array('user_settings', $privileges))
     $user_submenu[] = toolbar_item_link(page_link_to('user_settings'), 'list-alt', settings_title(), $p == 'user_settings');
