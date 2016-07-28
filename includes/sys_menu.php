@@ -59,7 +59,7 @@ function header_toolbar() {
     }
     
     // Hinweis für Engel, die noch nicht angekommen sind
-    if ($user['Gekommen'] == 0) {
+    if ($user['Gekommen'] == 0 && time() > strtotime('5 August 2016')) {
       $hints[] = error(_("You are not marked as arrived. Please go to the volunteer tent to get your volunteer badge."), true);
       $hint_class = 'danger';
       $glyphicon = 'warning-sign';
