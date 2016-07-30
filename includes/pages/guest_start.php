@@ -1,5 +1,6 @@
 <?php
 function guest_start() {
-  redirect(page_link_to('credits'));
+  global $logout_url;
+  redirect($logout_url);
 }
 ?>

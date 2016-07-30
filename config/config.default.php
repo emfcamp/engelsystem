@@ -71,4 +71,5 @@ $config = array(
 
 $sso_secret_key = 'volunteer-test';
 $sso_url = 'https://www.emfcamp.org/sso/volunteer.emfcamp.org';
+$logout_url = 'https://www.emfcamp.org/account';
 ?>
