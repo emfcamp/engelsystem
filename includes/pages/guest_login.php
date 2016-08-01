@@ -204,7 +204,7 @@ function guest_register() {
   }
   
   return page_with_title(register_title(), array(
-      _("By completing this form you're registering as a volunteer."),
+      _("By completing this form you're registering as a volunteer. Your account will be linked to your ticket, but we can send notifications to a different email address."),
       $msg,
       msg(),
       form(array(

@@ -1324,7 +1324,8 @@ msgstr "Engel-Registrierung erfolgreich!"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/guest_login.php:173
 msgid ""
-"By completing this form you're registering as a volunteer."
+"By completing this form you're registering as a volunteer. Your account will be "
+"linked to your ticket, but we can send notifications to a different email address."
 msgstr ""
 "Mit diesem Formular registrierst Du Dich als Engel. Du bekommst ein Konto in "
 "der Engel-Aufgabenverwaltung."
