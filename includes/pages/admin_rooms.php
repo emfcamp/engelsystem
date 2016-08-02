@@ -133,7 +133,7 @@ function admin_rooms() {
               div('row', array(
                   div('col-md-6', array(
                       form_text('name', _("Name"), $name),
-                      form_checkbox('from_pentabarf', _("Frab import"), $from_pentabarf),
+                      form_checkbox('from_pentabarf', _("JSON import"), $from_pentabarf),
                       form_checkbox('public', _("Public"), $public),
                       form_text('number', _("Room number"), $number) 
                   )),
@@ -178,7 +178,7 @@ function admin_rooms() {
       msg(),
       table(array(
           'name' => _("Name"),
-          'from_pentabarf' => _("Frab import"),
+          'from_pentabarf' => _("JSON import"),
           'public' => _("Public"),
           'actions' => "" 
       ), $rooms) 

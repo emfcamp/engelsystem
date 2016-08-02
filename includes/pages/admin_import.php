@@ -1,7 +1,7 @@
 <?php
 
 function admin_import_title() {
-  return _("Frab import");
+  return _("JSON import");
 }
 
 function admin_import() {
@@ -24,10 +24,11 @@ function admin_import() {
     error(_('Webserver has no write-permission on import directory.'));
   }
   
-  $import_file = '../import/import_' . $user['UID'] . '.xml';
+  $import_file = '../import/import_' . $user['UID'] . '.json';
   $shifttype_id = null;
   $add_minutes_start = 15;
   $add_minutes_end = 15;
+  $json_url = 'https://www.emfcamp.org/schedule.json?venue=Stage+A&venue=Stage+B&venue=Stage+C';
   
   $shifttypes_source = ShiftTypes();
   if ($shifttypes_source === false)
@@ -64,22 +65,23 @@ function admin_import() {
           error(_("Please enter an amount of minutes to add to a talk's end."));
         }
         
-        if (isset($_FILES['xcal_file']) && ($_FILES['xcal_file']['error'] == 0)) {
-          if (move_uploaded_file($_FILES['xcal_file']['tmp_name'], $import_file)) {
-            libxml_use_internal_errors(true);
-            if (simplexml_load_file($import_file) === false) {
+        if (isset($_REQUEST['json_url']) && trim($_REQUEST['json_url']) != '') {
+          $json_url = trim($_REQUEST['json_url']);
+          if (file_put_contents($import_file, file_get_contents($json_url))) {
+            if (json_decode(file_get_contents($import_file)) === false) {
               $ok = false;
-              error(_('No valid xml/xcal file provided.'));
+              error(_('No valid json provided.'));
               unlink($import_file);
             }
           } else {
             $ok = false;
-            error(_('File upload went wrong.'));
+            error(_('File download went wrong.'));
           }
         } else {
           $ok = false;
-          error(_('Please provide some data.'));
+          error(_('Please provide a URL for JSON data.'));
         }
+
       }
       
       if ($ok) {
@@ -90,11 +92,11 @@ function admin_import() {
         ]) . div('row', [
             div('col-md-offset-3 col-md-6', [
                 form(array(
-                    form_info('', _("This import will create/update/delete rooms and shifts by given FRAB-export file. The needed file format is xcal.")),
+                    form_info('', _("This import will create/update/delete rooms and shifts according to our JSON schedule.")),
                     form_select('shifttype_id', _('Shift type'), $shifttypes, $shifttype_id),
                     form_spinner('add_minutes_start', _("Add minutes to start"), $add_minutes_start),
                     form_spinner('add_minutes_end', _("Add minutes to end"), $add_minutes_end),
-                    form_file('xcal_file', _("xcal-File (.xcal)")),
+                    form_text('json_url', _("JSON URL"), $json_url),
                     form_submit('submit', _("Import")) 
                 )) 
             ]) 
@@ -255,7 +257,7 @@ function admin_import() {
 
 function prepare_rooms($file) {
   global $rooms_import;
-  $data = read_xml($file);
+  $data = read_json($file);
   
   // Load rooms from db for compare with input
   $rooms = sql_select("SELECT * FROM `Room` WHERE `FromPentabarf`='Y'");
@@ -266,12 +268,12 @@ function prepare_rooms($file) {
     $rooms_import[$room['Name']] = $room['RID'];
   }
   
-  $events = $data->vcalendar->vevent;
+  $events = $data;
   $rooms_pb = array();
   foreach ($events as $event) {
-    $rooms_pb[] = (string) $event->location;
-    if (! isset($rooms_import[trim($event->location)]))
-      $rooms_import[trim($event->location)] = trim($event->location);
+    $rooms_pb[] = (string) $event->venue;
+    if (! isset($rooms_import[trim($event->venue)]))
+      $rooms_import[trim($event->venue)] = trim($event->venue);
   }
   $rooms_pb = array_unique($rooms_pb);
   
@@ -286,26 +288,24 @@ function prepare_rooms($file) {
 
 function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_end) {
   global $rooms_import;
-  $data = read_xml($file);
+  $data = read_json($file);
   
   $rooms = sql_select("SELECT * FROM `Room`");
   $rooms_db = array();
   foreach ($rooms as $room)
     $rooms_db[$room['Name']] = $room['RID'];
   
-  $events = $data->vcalendar->vevent;
+  $events = $data;
   $shifts_pb = array();
   foreach ($events as $event) {
-    $event_pb = $event->children("http://pentabarf.org");
-    $event_id = trim($event_pb->{
-      'event-id' });
+    $event_id = trim($event->id);
     $shifts_pb[$event_id] = array(
         'shifttype_id' => $shifttype_id,
-        'start' => DateTime::createFromFormat("Ymd\THis", $event->dtstart)->getTimestamp() - $add_minutes_start * 60,
-        'end' => DateTime::createFromFormat("Ymd\THis", $event->dtend)->getTimestamp() + $add_minutes_end * 60,
-        'RID' => $rooms_import[trim($event->location)],
-        'title' => trim($event->summary),
-        'URL' => trim($event->url),
+        'start' => DateTime::createFromFormat("Y-m-d H:i:s", $event->start_date)->getTimestamp() - $add_minutes_start * 60,
+        'end' => DateTime::createFromFormat("Y-m-d H:i:s", $event->end_date)->getTimestamp() + $add_minutes_end * 60,
+        'RID' => $rooms_import[trim($event->venue)],
+        'title' => trim($event->title),
+        'URL' => trim($event->link),
         'PSID' => $event_id 
     );
   }
@@ -338,11 +338,11 @@ function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_e
   );
 }
 
-function read_xml($file) {
-  global $xml_import;
-  if (! isset($xml_import))
-    $xml_import = simplexml_load_file($file);
-  return $xml_import;
+function read_json($file) {
+  global $json_import;
+  if (! isset($json_import))
+    $json_import = json_decode(file_get_contents($file));
+  return $json_import;
 }
 
 function shifts_printable($shifts, $shifttypes) {

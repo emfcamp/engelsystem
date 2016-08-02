@@ -863,8 +863,8 @@ msgstr "Gruppe bearbeiten"
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:4
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:131
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_rooms.php:176
-msgid "Frab import"
-msgstr "Frab Import"
+msgid "JSON import"
+msgstr "JSON Import"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:24
 msgid "Webserver has no write-permission on import directory."
@@ -928,8 +928,8 @@ msgstr "Importieren"
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/pages/admin_import.php:93
 msgid ""
-"This import will create/update/delete rooms and shifts by given FRAB-export "
-"file. The needed file format is xcal."
+"This import will create/update/delete rooms and shifts according to our JSON "
+"schedule."
 msgstr ""
 "Dieser Import erzeugt, ändert und löscht Räume und Schichten anhand einer "
 "FRAB-Export Datei. Das benötigte Format ist xcal."
