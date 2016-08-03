@@ -26,8 +26,9 @@ function admin_import() {
   
   $import_file = '../import/import_' . $user['UID'] . '.json';
   $shifttype_id = null;
-  $add_minutes_start = 15;
-  $add_minutes_end = 15;
+  $shifttype_id = 14;
+  $add_minutes_start = 5;
+  $add_minutes_end = 5;
   $json_url = 'https://www.emfcamp.org/schedule.json?venue=Stage+A&venue=Stage+B&venue=Stage+C';
   
   $shifttypes_source = ShiftTypes();
