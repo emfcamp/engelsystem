@@ -2040,7 +2040,7 @@ msgstr ""
 
 #: /Users/msquare/workspace/projects/engelsystem/includes/view/AngelTypes_view.php:251
 msgid ""
-"This role requires training. Please turn up to a training session."
+"This role is restricted. Please visit the volunteer tent to sign up."
 msgstr ""
 "Dieser Engeltyp muss zusätzlich von einem Team-Koordinator freigeschaltet "
 "werden. Bitte komme zu den entsprechenden Einführungstreffen."

@@ -248,7 +248,7 @@ function AngelTypes_about_view($angeltypes, $user_logged_in) {
     }
     
     if ($angeltype['restricted'])
-      $content[] = info(_("This role requires training. Please turn up to a training session."), true);
+      $content[] = info(_("This role is restricted. Please visit the volunteer tent to sign up."), true);
     if ($angeltype['description'] != "")
       $content[] = '<div class="well">' . $parsedown->parse($angeltype['description']) . '</div>';
     $content[] = '<hr />';
