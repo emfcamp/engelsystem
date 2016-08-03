@@ -309,6 +309,23 @@ function prepare_events($file, $shifttype_id, $add_minutes_start, $add_minutes_e
         'URL' => trim($event->link),
         'PSID' => $event_id 
     );
+    if ($shifttype_id == 14) {
+        // VOC Camera - add a second shift for VOC Editor
+        if ($event_id < 0) {
+            $event_id -= 10000;
+        } else {
+            $event_id += 10000;
+        }
+        $shifts_pb[$event_id] = array(
+            'shifttype_id' => 15,
+            'start' => DateTime::createFromFormat("Y-m-d H:i:s", $event->start_date)->getTimestamp() - $add_minutes_start * 60,
+            'end' => DateTime::createFromFormat("Y-m-d H:i:s", $event->end_date)->getTimestamp() + $add_minutes_end * 60,
+            'RID' => $rooms_import[trim($event->venue)],
+            'title' => trim($event->title),
+            'URL' => trim($event->link),
+            'PSID' => $event_id 
+        );
+    }
   }
   
   $shifts = sql_select("SELECT * FROM `Shifts` WHERE `PSID` IS NOT NULL ORDER BY `start`");
