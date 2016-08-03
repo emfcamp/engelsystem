@@ -11,7 +11,7 @@
  * 
  * @return string
  */
-function ShiftEntry_edit_view($angel, $date, $location, $title, $type, $comment, $freeloaded, $freeload_comment, $user_admin_shifts = false) {
+function ShiftEntry_edit_view($angel, $date, $location, $title, $type, $type_description, $comment, $freeloaded, $freeload_comment, $user_admin_shifts = false) {
   if ($user_admin_shifts) {
     $freeload_form = array(
         form_checkbox('freeloaded', _("Freeloaded"), $freeloaded),
@@ -20,6 +20,7 @@ function ShiftEntry_edit_view($angel, $date, $location, $title, $type, $comment,
   } else {
     $freeload_form = array();
   }
+  $parsedown = new Parsedown();
   return page_with_title(_("Edit shift entry"), array(
       msg(),
       form(array(
@@ -28,6 +29,7 @@ function ShiftEntry_edit_view($angel, $date, $location, $title, $type, $comment,
           form_info(_("Location:"), $location),
           form_info(_("Title:"), $title),
           form_info(_("Type:"), $type),
+          '<div>' . $parsedown->parse($type_description) . '</div>',
           form_textarea('comment', _("Comment (for your eyes only):"), $comment),
           join("", $freeload_form),
           form_submit('submit', _("Save")) 

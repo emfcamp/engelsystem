@@ -317,7 +317,18 @@ function user_shifts() {
       $angeltyppe_select = $type['name'];
     }
 
-    return ShiftEntry_edit_view($user_text, date("Y-m-d H:i", $shift['start']) . ' &ndash; ' . date('Y-m-d H:i', $shift['end']) . ' (' . shift_length($shift) . ')', $shift['Name'], $shift['name'], $angeltyppe_select, "", false, null, in_array('user_shifts_admin', $privileges));
+    $type_description = $type['description'];
+
+    return ShiftEntry_edit_view($user_text,
+        date("Y-m-d H:i", $shift['start']) . ' &ndash; ' . date('Y-m-d H:i', $shift['end']) . ' (' . shift_length($shift) . ')',
+        $shift['Name'],
+        $shift['name'],
+        $angeltyppe_select,
+        $type_description,
+        "",
+        false,
+        null,
+        in_array('user_shifts_admin', $privileges));
   } else {
     return view_user_shifts();
   }
