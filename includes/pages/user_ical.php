@@ -40,8 +40,8 @@ function user_ical() {
     $html .= "SUMMARY:" . str_replace("\n", "\\n", $shift['name']) . " (" . str_replace("\n", "\\n", $shift['title']) . ")\r\n";
     if(isset($shift['Comment']))
       $html .= "DESCRIPTION:" . str_replace("\n", "\\n", $shift['Comment']) . "\r\n";
-    $html .= "DTSTART;TZID=Europe/Berlin:" . date("Ymd\THis", $shift['start']) . "\r\n";
-    $html .= "DTEND;TZID=Europe/Berlin:" . date("Ymd\THis", $shift['end']) . "\r\n";
+    $html .= "DTSTART;TZID=Europe/London:" . date("Ymd\THis", $shift['start']) . "\r\n";
+    $html .= "DTEND;TZID=Europe/London:" . date("Ymd\THis", $shift['end']) . "\r\n";
     $html .= "LOCATION:" . $shift['room_name'] . "\r\n";
     $html .= "END:VEVENT\r\n";
   }
